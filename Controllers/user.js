@@ -28,6 +28,12 @@ export const SignUp = async (req, res,next) => {
     console.log(hashedPswd);
     user = await User.create({ name, email, password: hashedPswd ,images:[]});
 
+    req.session.user = {
+      id:user._id,
+      name:user.name,
+      email:user.email,
+     };
+
     return res.status(200).json({
       success:true,
       message:"Register successfully",
@@ -138,7 +144,7 @@ export const uploadImage = async (req, res) => {
    
     user.images.push(newImage);
     user.save();
-    return res.status(201).json({
+     res.status(201).json({
       success:true,
       message:"Image Uploaded Successfully"
     })
@@ -148,3 +154,14 @@ export const uploadImage = async (req, res) => {
     res.status(500).json({ success: false, message: 'Image upload failed' });
   }
 };
+
+export const getImages =async(req,res,next)=>{
+  let user = await User.findOne({_id:req.session.user.id});
+  if(!user){
+    return next(new ErrorHandler("User not found" , 404));
+  }
+  res.status(200).json({
+    success:true,
+    images:user.images
+  })
+}
