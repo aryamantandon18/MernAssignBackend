@@ -3,20 +3,20 @@ import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
 import cloudinary from 'cloudinary'
 
-export const SignUp = async (req, res,next) => {
+export const SignUp = async(req, res,next) => {
   try {
-    console.log("Line 8 - ",req.body);
+    // console.log("Line 8 - ",req.body);
     const { name, email, password } = req.body;
 
     console.log("Received request body:", req.body);
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Please provide both email and password" });
   }
-  console.log("line 13")
+  // console.log("line 13")
  
     let user = await User.findOne({email});
-    console.log(user)
-    console.log("line 15")
+    // console.log(user)
+    // console.log("line 15")
     if (user) {
       return res.status(404).json({
         success: false,
@@ -47,7 +47,6 @@ export const SignUp = async (req, res,next) => {
 export const Login = async(req,res,next)=>{
   try {
    const {email,password} = req.body;
-   console.log("Hello")
    if (!email || !password) {
      return next(new ErrorHandler("Please Enter Email & Password",400));
    }
@@ -102,7 +101,6 @@ try{
 
 export const getMyProfile = (req, res, next) => {
   try {
-    console.log("line 97 ")
       const user = req.session.user;
       if (!user) {
           throw new ErrorHandler("Login First", 404);
@@ -120,22 +118,20 @@ export const getMyProfile = (req, res, next) => {
 
 export const uploadImage = async (req, res) => {
   try {
-    console.log(req.body);
-    const userId = req.session.user.id; // Assuming user ID is available in request
+    const userId = req.session?.user?.id; // Assuming user ID is available in request
     let user = await User.findOne({_id:userId});
-    // console.log(user);
-    console.log("Line 117");
+    // console.log("Line 117");
     if(!user){
       return next(new ErrorHandler("User not found" , 404));
     }
-    console.log("Line 121");
+    // console.log("Line 121");
     const result = await cloudinary.v2.uploader.upload(req.body.image, {
       folder: "userImages",
       width: 150,
       crop: "scale"
     });
-    console.log(result);
-    console.log("Line 127");
+    // console.log(result);
+    // console.log("Line 127");
     const newImage = {
       title:req.body.title,
       public_id: result.public_id,  
@@ -165,3 +161,15 @@ export const getImages =async(req,res,next)=>{
     images:user.images
   })
 }
+
+
+// export const handler = async(req,res) =>{
+//    let id = req.params.id;
+// }
+
+  
+// readableSource.pipe(writableSource)
+
+
+
+
