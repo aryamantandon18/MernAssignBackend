@@ -25,10 +25,11 @@ app.use(bodyParser.urlencoded({extended:true , limit: '50mb'}));
 app.use(session({
     secret: "key that will sign the cookie",
     resave:false,
-    saveUninitialized:true,       
+    saveUninitialized:false,       
     cookie: {
         secure: false, // Set to true in production with HTTPS
-        maxAge: 1000 * 60 * 60 * 24 // Session TTL (optional)
+        maxAge: 24 * 60 * 60 * 1000, // Session TTL (optional)
+        sameSite: 'lax'
     },
     store:store
 }));

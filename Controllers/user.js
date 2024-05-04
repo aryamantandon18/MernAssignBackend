@@ -101,7 +101,7 @@ try{
 
 export const getMyProfile = (req, res, next) => {
   try {
-      const user = req.session.user;
+      const user = req.session?.user;
       if (!user) {
           throw new ErrorHandler("Login First", 404);
       }
