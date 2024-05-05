@@ -32,7 +32,7 @@ app.use(session({
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // Session expiry (1 day)
         secure: true, // Set to true in production (HTTPS)
-        sameSite: 'lax' // CSRF protection
+        sameSite: 'None' // CSRF protection
     },
     store:store
 }));
