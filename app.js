@@ -16,6 +16,9 @@ const store = new mongodbStore({
     uri: process.env.MONGO_URI,
     collection: 'mySessions'
 });
+store.on('error', function(error) {
+    console.error('Session store error:', error);
+});
 
 app.use(express.json());               // { limit: '30mb' }
 app.use(express.urlencoded({extended:true}));
@@ -23,13 +26,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true , limit: '50mb'}));
 
 app.use(session({
-    secret: "key that will sign the cookie",
-    resave:false,
-    saveUninitialized:false,       
+    secret: 'your_secret_key', // Use a secure secret for session encryption
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-        secure: false, // Set to true in production with HTTPS
-        maxAge: 24 * 60 * 60 * 1000, // Session TTL (optional)
-        sameSite: 'lax'
+        maxAge: 24 * 60 * 60 * 1000, // Session expiry (1 day)
+        secure: true, // Set to true in production (HTTPS)
+        sameSite: 'lax' // CSRF protection
     },
     store:store
 }));
