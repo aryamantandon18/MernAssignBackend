@@ -14,7 +14,8 @@ config({          // to use .env file variables
 const mongodbStore = ConnectMongoDBSession(session);
 const store = new mongodbStore({
     uri: process.env.MONGO_URI,
-    collection: 'mySessions'
+    collection: 'mySessions',
+    ttl: 7 * 24 * 60 * 60 
 });
 store.on('error', function(error) {
     console.error('Session store error:', error);
@@ -28,11 +29,11 @@ app.use(bodyParser.urlencoded({extended:true , limit: '50mb'}));
 app.use(session({
     secret: 'your_secret_key', // Use a secure secret for session encryption
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // Session expiry (1 day)
-        secure: true, // Set to true in production (HTTPS)
-        sameSite: 'None' // CSRF protection
+        secure: false, // Set to true in production (HTTPS)
+        sameSite: 'strict' // CSRF protection
     },
     store:store
 }));

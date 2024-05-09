@@ -64,11 +64,8 @@ export const Login = async(req,res,next)=>{
      success:false,
      message: "invalid password or email"})
    };
-   req.session.user = {
-    id:user._id,
-    name:user.name,
-    email:user.email,
-   };
+   req.session.user = user._id;
+   console.log(req.session)
    
    res.status(200).json({
     success:true,
@@ -111,7 +108,7 @@ export const getMyProfile = (req, res, next) => {
           success: true,
           message: "Here is the user",
           user: user
-      });
+      });     
   } catch (error) {
       next(error); // Pass the error to the error handling middleware
   }
