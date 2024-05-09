@@ -33,14 +33,17 @@ app.use(session({
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // Session expiry (1 day)
         secure: false, // Set to true in production (HTTPS)
-        sameSite: 'strict' // CSRF protection
+        sameSite: 'Strict' // CSRF protection
     },
     store:store
 }));
 // CORS configuration
 app.use(cors({
     origin: [process.env.FRONTEND_URL],
-    credentials: true,
+    withCredentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    optionsSuccessStatus: 204
 }));
 
 app.use('/users',userRoutes);
