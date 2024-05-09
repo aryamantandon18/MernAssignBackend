@@ -41,9 +41,7 @@ app.use(session({
 app.use(cors({
     origin: [process.env.FRONTEND_URL],
     withCredentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'], 
-    optionsSuccessStatus: 204
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
 app.use('/users',userRoutes);
